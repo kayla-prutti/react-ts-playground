@@ -81,7 +81,7 @@ export default function UserProfileLoader() {
       {/* TODO: Render loading, error, and user states. */}
       {isLoading && <p>Loading…</p>}
       {error && <p role="alert">{error}</p>}
-      {user && (
+      {!isLoading && user && (
         <article>
           <h2>{user.name}</h2>
           <p>{user.email}</p>
