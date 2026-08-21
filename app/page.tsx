@@ -1,62 +1,40 @@
 "use client";
 
 import { useState } from "react";
+import FilterableProductList from "../playgrounds/01-filterable-product-list";
+import UserProfileLoader from "../playgrounds/02-user-profile-loader";
 
-type Product = {
-  id: number;
-  name: string;
-  category: "Home" | "Outdoors" | "Office";
-  price: number;
-};
-
-const products: Product[] = [
-  { id: 1, name: "Ceramic mug", category: "Home", price: 24 },
-  { id: 2, name: "Trail bottle", category: "Outdoors", price: 32 },
-  { id: 3, name: "Desk lamp", category: "Office", price: 48 },
-  { id: 4, name: "Field notebook", category: "Office", price: 12 },
+const exercises = [
+  { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
+  { id: "profile", number: "02", title: "User profile loader", skills: "interface · useState · useEffect", file: "playgrounds/02-user-profile-loader.tsx", status: "Next up" },
 ];
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-
-  const filtedProducts = products.filter((product) => {
-    const searchValue = query.toLowerCase();
-
-    return (
-      product.name.toLowerCase().includes(searchValue) ||
-      product.category.toLowerCase().includes(searchValue)
-    );
-  });
+  const [selectedId, setSelectedId] = useState("products");
+  const selected = exercises.find((exercise) => exercise.id === selectedId)!;
+  const Exercise = selectedId === "products" ? FilterableProductList : UserProfileLoader;
 
   return (
-    <main>
-      <header>
-        <p>React interview mock</p>
-        <h1>Filterable product list</h1>
-        <p className="brief">
-          Build a product catalog where someone can search, filter by category,
-          and save favorites. Start with the search box below.
-        </p>
-      </header>
+    <main className="hub">
+      <aside className="sidebar">
+        <div className="brand">React practice</div>
+        <p className="sidebar-label">Playgrounds</p>
+        <nav aria-label="Practice exercises">
+          {exercises.map((exercise) => (
+            <button className={exercise.id === selectedId ? "exercise-link active" : "exercise-link"} key={exercise.id} onClick={() => setSelectedId(exercise.id)}>
+              <span>{exercise.number}</span><strong>{exercise.title}</strong><small>{exercise.skills}</small>
+            </button>
+          ))}
+        </nav>
+        <p className="sidebar-note">Edit each exercise in its own file. Your next challenge is ready when you are.</p>
+      </aside>
 
-      <label htmlFor="search">Search products</label>
-      <input
-        id="search"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder="Try “mug”"
-      />
-
-      <section aria-label="Products">
-        {filtedProducts.map((product) => (
-          <article key={product.id}>
-            <div>
-              <strong>{product.name}</strong>
-              <span>{product.category}</span>
-            </div>
-            <b>${product.price}</b>
-          </article>
-        ))}
+      <section className="workbench">
+        <header className="workbench-header">
+          <div><p className="eyebrow">{selected.status}</p><h1>{selected.title}</h1><p>{selected.skills}</p></div>
+          <code>{selected.file}</code>
+        </header>
+        <div className="exercise-stage"><Exercise /></div>
       </section>
     </main>
   );
