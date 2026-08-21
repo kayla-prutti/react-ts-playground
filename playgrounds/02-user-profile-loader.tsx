@@ -11,7 +11,12 @@ interface User {
 
 const users: User[] = [
   { id: 1, name: "Avery Chen", email: "avery@example.com", role: "Engineer" },
-  { id: 2, name: "Jordan Rivera", email: "jordan@example.com", role: "Designer" },
+  {
+    id: 2,
+    name: "Jordan Rivera",
+    email: "jordan@example.com",
+    role: "Designer",
+  },
   { id: 3, name: "Morgan Lee", email: "morgan@example.com", role: "Product" },
 ];
 
@@ -37,13 +42,27 @@ export default function UserProfileLoader() {
     // 2. Call fetchUser(selectedUserId).
     // 3. Store the returned user, or store an error message.
     // 4. Set loading to false when the request is complete.
+    setIsLoading(true);
+    setError("");
+    fetchUser(selectedUserId)
+      .then((selectUser) => {
+        setUser(selectUser);
+      })
+      .catch((error: Error) => {
+        setError(error.message);
+        setUser(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [selectedUserId]);
 
   return (
     <main>
       <h1>User profile</h1>
       <p className="walkthrough">
-        Walkthrough: I will use an interface for the user data and useEffect to load a selected profile.
+        Walkthrough: I will use an interface for the user data and useEffect to
+        load a selected profile.
       </p>
 
       <label htmlFor="user">Choose a user</label>

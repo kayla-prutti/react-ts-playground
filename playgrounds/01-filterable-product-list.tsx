@@ -16,6 +16,9 @@ const products: Product[] = [
   { id: 4, name: "Field notebook", category: "Office", price: 12 },
 ];
 
+// TODO:
+// 1. filter favorite item or category.
+// 2. render filter products.
 export default function FilterableProductList() {
   const [query, setQuery] = useState("");
   const filteredProducts = products.filter((product) => {
@@ -29,7 +32,8 @@ export default function FilterableProductList() {
   return (
     <main>
       <p className="walkthrough">
-        Walkthrough: I will keep the query in state, use query to filter the product. Render filterProducts
+        Walkthrough: I will keep the query in state, use query to filter the
+        product. Render filterProducts
       </p>
       <label htmlFor="search">Search products</label>
       <input
