@@ -53,17 +53,24 @@ export default function TaskManager() {
         />
         <button type="submit">Add</button>
       </form>
-      <p>{tasks.length} tasks</p>
-      {tasks.map((task) => (
-        <div key={task.id} style={{ display: "flex", gap: "8px" }}>
-          <p>{task.title}</p>
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => handleTaskCompletion(task.id)}
-          />
+
+      {tasks.length === 0 ? (
+        <p>No task</p>
+      ) : (
+        <div>
+          <p>{tasks.length} tasks</p>
+          {tasks.map((task) => (
+            <div key={task.id} style={{ display: "flex", gap: "8px" }}>
+              <p>{task.title}</p>
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleTaskCompletion(task.id)}
+              />
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </main>
   );
 }
