@@ -1,17 +1,25 @@
 "use client";
+
 import { createContext, useContext, useState } from "react";
+
 type Theme = "light" | "dark";
+
 interface ThemeContextValue {
   theme: Theme;
   toggleTheme: () => void;
 }
+
 const ThemeContext = createContext<ThemeContextValue | null>(null);
+
 function ThemePreview() {
   const context = useContext(ThemeContext);
+
   if (!context)
     throw new Error("ThemePreview must be inside ThemeContext.Provider");
+
   return <p>Current theme: {context.theme}</p>;
 }
+
 export default function ThemeContextPractice() {
   const [theme, setTheme] = useState<Theme>("light");
   const toggleTheme = () =>

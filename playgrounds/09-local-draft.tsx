@@ -1,5 +1,7 @@
 "use client";
+
 import { useEffect, useState } from "react";
+
 function useLocalStorage<T>(key: string, initialValue: T) {
   const [value, setValue] = useState<T>(initialValue);
   useEffect(() => {
@@ -7,8 +9,10 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   }, [key, value]);
   return [value, setValue] as const;
 }
+
 export default function LocalDraft() {
   const [draft, setDraft] = useLocalStorage("practice-draft", "");
+
   return (
     <main>
       <h1>Saved draft</h1>
