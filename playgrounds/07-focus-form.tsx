@@ -1,11 +1,18 @@
 "use client";
+
 import { useRef, useState } from "react";
+
 export default function FocusForm() {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
   function focusMessage() {
     /* TODO: Focus the input with inputRef.current. */
+    inputRef.current?.focus();
   }
+
+  console.log("inputRef", inputRef);
+
   return (
     <main>
       <h1>Focus form</h1>

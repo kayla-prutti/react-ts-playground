@@ -1,4 +1,5 @@
 "use client";
+
 import { useMemo, useState } from "react";
 interface Product {
   id: number;
@@ -6,6 +7,7 @@ interface Product {
   category: "Home" | "Office" | "Outdoors";
   price: number;
 }
+
 const products: Product[] = [
   { id: 1, name: "Ceramic mug", category: "Home", price: 24 },
   { id: 2, name: "Pot", category: "Home", price: 24 },
@@ -14,6 +16,7 @@ const products: Product[] = [
   { id: 5, name: "Chair", category: "Office", price: 48 },
   { id: 6, name: "Trail bottle", category: "Outdoors", price: 32 },
 ];
+
 export default function ProductInsights() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | Product["category"]>("All");
