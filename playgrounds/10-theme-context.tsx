@@ -26,16 +26,18 @@ export default function ThemeContextPractice() {
     setTheme((current) => (current === "light" ? "dark" : "light"));
   // TODO: Wrap ThemePreview in ThemeContext.Provider and pass theme + toggleTheme.
   return (
-    <main>
-      <h1>Theme context</h1>
-      <p className="walkthrough">
-        Walkthrough: Context shares a value with nested components without
-        passing it through every level as props.
-      </p>
-      <button type="button" onClick={toggleTheme}>
-        Toggle theme
-      </button>
-      <p>Current theme: {theme}</p>
-    </main>
+    <ThemeContext value={{ theme, toggleTheme }}>
+      <main>
+        <h1>Theme context</h1>
+        <p className="walkthrough">
+          Walkthrough: Context shares a value with nested components without
+          passing it through every level as props.
+        </p>
+        <button type="button" onClick={toggleTheme}>
+          Toggle theme
+        </button>
+        <ThemePreview />
+      </main>
+    </ThemeContext>
   );
 }
