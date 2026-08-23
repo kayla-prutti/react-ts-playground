@@ -11,6 +11,7 @@ import FocusForm from "../playgrounds/07-focus-form";
 import ReducerTaskBoard from "../playgrounds/08-reducer-task-board";
 import LocalDraft from "../playgrounds/09-local-draft";
 import ThemeContextPractice from "../playgrounds/10-theme-context";
+import SignupForm from "../playgrounds/11-signup-form";
 
 const exercises = [
   { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
@@ -23,6 +24,7 @@ const exercises = [
   { id: "reducer", number: "08", title: "Reducer task board", skills: "useReducer · actions · state", file: "playgrounds/08-reducer-task-board.tsx", status: "Build from scratch" },
   { id: "storage", number: "09", title: "Saved draft", skills: "custom hook · useEffect", file: "playgrounds/09-local-draft.tsx", status: "Build from scratch" },
   { id: "context", number: "10", title: "Theme context", skills: "useContext · shared state", file: "playgrounds/10-theme-context.tsx", status: "Build from scratch" },
+  { id: "form", number: "11", title: "Signup form", skills: "controlled inputs · validation · submit", file: "playgrounds/11-signup-form.tsx", status: "Interview essential" },
 ];
 
 export default function Home() {
@@ -37,7 +39,8 @@ export default function Home() {
     : selectedId === "ref" ? FocusForm
     : selectedId === "reducer" ? ReducerTaskBoard
     : selectedId === "storage" ? LocalDraft
-    : ThemeContextPractice;
+    : selectedId === "context" ? ThemeContextPractice
+    : SignupForm;
 
   return (
     <main className="hub">

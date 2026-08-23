@@ -14,5 +14,6 @@ Each file is a self-contained interview exercise. Work through them in order.
 | `08-reducer-task-board.tsx` | `useReducer` and action functions |
 | `09-local-draft.tsx` | Custom hooks and browser storage |
 | `10-theme-context.tsx` | `useContext` and shared state |
+| `11-signup-form.tsx` | Controlled inputs, typed validation, and submit handling |
 
 For each exercise, begin by saying what state you need, what can be derived, and what the simplest usable version is.
