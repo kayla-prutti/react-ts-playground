@@ -12,6 +12,7 @@ import ReducerTaskBoard from "../playgrounds/08-reducer-task-board";
 import LocalDraft from "../playgrounds/09-local-draft";
 import ThemeContextPractice from "../playgrounds/10-theme-context";
 import SignupForm from "../playgrounds/11-signup-form";
+import SupportTicketQueue from "../playgrounds/12-support-ticket-queue";
 
 const exercises = [
   { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
@@ -25,6 +26,7 @@ const exercises = [
   { id: "storage", number: "09", title: "Saved draft", skills: "custom hook · useEffect", file: "playgrounds/09-local-draft.tsx", status: "Build from scratch" },
   { id: "context", number: "10", title: "Theme context", skills: "useContext · shared state", file: "playgrounds/10-theme-context.tsx", status: "Build from scratch" },
   { id: "form", number: "11", title: "Signup form", skills: "controlled inputs · validation · submit", file: "playgrounds/11-signup-form.tsx", status: "Interview essential" },
+  { id: "tickets", number: "12", title: "Support ticket queue", skills: "useEffect · filters · immutable updates", file: "playgrounds/12-support-ticket-queue.tsx", status: "45-minute mock" },
 ];
 
 export default function Home() {
@@ -40,7 +42,8 @@ export default function Home() {
     : selectedId === "reducer" ? ReducerTaskBoard
     : selectedId === "storage" ? LocalDraft
     : selectedId === "context" ? ThemeContextPractice
-    : SignupForm;
+    : selectedId === "form" ? SignupForm
+    : SupportTicketQueue;
 
   return (
     <main className="hub">

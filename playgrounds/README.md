@@ -15,5 +15,6 @@ Each file is a self-contained interview exercise. Work through them in order.
 | `09-local-draft.tsx` | Custom hooks and browser storage |
 | `10-theme-context.tsx` | `useContext` and shared state |
 | `11-signup-form.tsx` | Controlled inputs, typed validation, and submit handling |
+| `12-support-ticket-queue.tsx` | A timed mid-level interview exercise with effects, filters, and state updates |
 
 For each exercise, begin by saying what state you need, what can be derived, and what the simplest usable version is.
