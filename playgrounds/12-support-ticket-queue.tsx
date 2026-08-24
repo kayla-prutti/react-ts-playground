@@ -60,14 +60,36 @@ export default function SupportTicketQueue() {
   useEffect(() => {
     // TODO (5-10 min): Load tickets with fetchTickets().
     // Set loading before the request, then handle success and error states.
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const resp = await fetchTickets();
+        setTickets(resp);
+      } catch {
+        setError("Can't load data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const visibleTickets = tickets;
-  // TODO (10-15 min): Filter tickets by query and statusFilter.
-  // Search should match a customer or a subject.
+  const visibleTickets = tickets.filter(
+    // TODO (10-15 min): Filter tickets by query and statusFilter.
+    // Search should match a customer or a subject.
+    (ticket) =>
+      (statusFilter === "all" || ticket.status === statusFilter) &&
+      (ticket.customer.toLowerCase().includes(query.toLowerCase()) ||
+        ticket.subject.toLowerCase().includes(query.toLowerCase()))
+  );
 
   function updateTicketStatus(id: number, status: TicketStatus) {
     // TODO (5-10 min): Update only the matching ticket, without mutating state.
+    const updateTickets = tickets.map((ticket) =>
+      ticket.id === id ? { ...ticket, status: status } : ticket
+    );
+    setTickets(updateTickets);
   }
 
   return (
