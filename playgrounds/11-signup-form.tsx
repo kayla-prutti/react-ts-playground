@@ -67,6 +67,11 @@ export default function SignupForm() {
     }
   }
 
+  function handleOnBlur(field: keyof SignupValues) {
+    const validateErrors = validate();
+    setErrors(validateErrors);
+  }
+
   return (
     <main>
       <h1>Signup form</h1>
@@ -80,7 +85,8 @@ export default function SignupForm() {
         <input
           id="name"
           value={values.name}
-          onChange={(event) => handleChange("name", event.target.value)}
+          onChange={(e) => handleChange("name", e.target.value)}
+          onBlur={() => handleOnBlur("name")}
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "name-error" : undefined}
         />
@@ -95,7 +101,8 @@ export default function SignupForm() {
           id="email"
           type="email"
           value={values.email}
-          onChange={(event) => handleChange("email", event.target.value)}
+          onChange={(e) => handleChange("email", e.target.value)}
+          onBlur={() => handleOnBlur("email")}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "email-error" : undefined}
         />
@@ -110,7 +117,8 @@ export default function SignupForm() {
           id="password"
           type="password"
           value={values.password}
-          onChange={(event) => handleChange("password", event.target.value)}
+          onChange={(e) => handleChange("password", e.target.value)}
+          onBlur={() => handleOnBlur("name")}
           aria-invalid={Boolean(errors.password)}
           aria-describedby={errors.password ? "password-error" : undefined}
         />
