@@ -13,6 +13,7 @@ import LocalDraft from "../playgrounds/09-local-draft";
 import ThemeContextPractice from "../playgrounds/10-theme-context";
 import SignupForm from "../playgrounds/11-signup-form";
 import SupportTicketQueue from "../playgrounds/12-support-ticket-queue";
+import ContactCardComponents from "../playgrounds/13-contact-card-components";
 
 const exercises = [
   { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
@@ -27,6 +28,7 @@ const exercises = [
   { id: "context", number: "10", title: "Theme context", skills: "useContext · shared state", file: "playgrounds/10-theme-context.tsx", status: "Build from scratch" },
   { id: "form", number: "11", title: "Signup form", skills: "controlled inputs · validation · submit", file: "playgrounds/11-signup-form.tsx", status: "Interview essential" },
   { id: "tickets", number: "12", title: "Support ticket queue", skills: "useEffect · filters · immutable updates", file: "playgrounds/12-support-ticket-queue.tsx", status: "45-minute mock" },
+  { id: "components", number: "13", title: "Contact card components", skills: "components · props · callbacks", file: "playgrounds/13-contact-card-components.tsx", status: "Build from scratch" },
 ];
 
 export default function Home() {
@@ -43,7 +45,8 @@ export default function Home() {
     : selectedId === "storage" ? LocalDraft
     : selectedId === "context" ? ThemeContextPractice
     : selectedId === "form" ? SignupForm
-    : SupportTicketQueue;
+    : selectedId === "tickets" ? SupportTicketQueue
+    : ContactCardComponents;
 
   return (
     <main className="hub">
