@@ -6,8 +6,15 @@ import { useState } from "react";
 // CTO prompt: “This screen is designed. Can you make search and cart interactions work?”
 // Ask: Is search case-insensitive? Yes. What happens when an item is added twice? Increase quantity. What does minus do at one? Remove it.
 
-interface Product { id: number; name: string; category: string; price: number; }
-interface CartItem extends Product { quantity: number; }
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+}
+interface CartItem extends Product {
+  quantity: number;
+}
 
 const products: Product[] = [
   { id: 1, name: "Canvas tote", category: "Accessories", price: 28 },
@@ -21,16 +28,82 @@ export default function PrebuiltProductCartInterview() {
   const [cart, setCart] = useState<CartItem[]>([]);
   // TODO 1: replace products with a case-insensitive search result.
   const visibleProducts = products;
-  function addToCart(product: Product) { /* TODO 2: add a CartItem or increase its quantity. */ }
-  function updateQuantity(id: number, change: number) { /* TODO 3: update immutably and remove at zero. */ }
+  function addToCart(product: Product) {
+    /* TODO 2: add a CartItem or increase its quantity. */
+  }
+  function updateQuantity(id: number, change: number) {
+    /* TODO 3: update immutably and remove at zero. */
+  }
   // TODO 4: derive total from cart with reduce.
   const total = 0;
 
-  return <main className="interview-cart">
-    <header className="store-header"><div><p className="store-kicker">Field goods</p><h1>Shop the collection</h1></div><p>{cart.length} items in cart</p></header>
-    <div className="store-layout">
-      <section className="catalog" aria-label="Products"><label htmlFor="product-search">Search products</label><input id="product-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by name or category" /><div className="product-grid">{visibleProducts.map((product) => <article className="product-card" key={product.id}><p>{product.category}</p><h2>{product.name}</h2><strong>${product.price.toFixed(2)}</strong><button type="button" onClick={() => addToCart(product)}>Add to cart</button></article>)}</div>{/* TODO: Render an empty state if visibleProducts is empty. */}</section>
-      <aside className="cart-panel" aria-label="Shopping cart"><h2>Your cart</h2>{cart.length === 0 ? <p className="empty-cart">Your cart is empty.</p> : cart.map((item) => <div className="cart-row" key={item.id}><div><strong>{item.name}</strong><span>${item.price.toFixed(2)}</span></div><div className="quantity-controls"><button type="button" onClick={() => updateQuantity(item.id, -1)}>−</button><span>{item.quantity}</span><button type="button" onClick={() => updateQuantity(item.id, 1)}>+</button></div></div>)}<div className="cart-total"><span>Total</span><strong>${total.toFixed(2)}</strong></div></aside>
-    </div>
-  </main>;
+  return (
+    <main className="interview-cart">
+      <header className="store-header">
+        <div>
+          <p className="store-kicker">Field goods</p>
+          <h1>Shop the collection</h1>
+        </div>
+        <p>{cart.length} items in cart</p>
+      </header>
+      <div className="store-layout">
+        <section className="catalog" aria-label="Products">
+          <label htmlFor="product-search">Search products</label>
+          <input
+            id="product-search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search by name or category"
+          />
+          <div className="product-grid">
+            {visibleProducts.map((product) => (
+              <article className="product-card" key={product.id}>
+                <p>{product.category}</p>
+                <h2>{product.name}</h2>
+                <strong>${product.price.toFixed(2)}</strong>
+                <button type="button" onClick={() => addToCart(product)}>
+                  Add to cart
+                </button>
+              </article>
+            ))}
+          </div>
+          {/* TODO: Render an empty state if visibleProducts is empty. */}
+        </section>
+        <aside className="cart-panel" aria-label="Shopping cart">
+          <h2>Your cart</h2>
+          {cart.length === 0 ? (
+            <p className="empty-cart">Your cart is empty.</p>
+          ) : (
+            cart.map((item) => (
+              <div className="cart-row" key={item.id}>
+                <div>
+                  <strong>{item.name}</strong>
+                  <span>${item.price.toFixed(2)}</span>
+                </div>
+                <div className="quantity-controls">
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(item.id, -1)}
+                  >
+                    −
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(item.id, 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+          <div className="cart-total">
+            <span>Total</span>
+            <strong>${total.toFixed(2)}</strong>
+          </div>
+        </aside>
+      </div>
+    </main>
+  );
 }
