@@ -18,5 +18,6 @@ Each file is a self-contained interview exercise. Work through them in order.
 | `12-support-ticket-queue.tsx` | A timed mid-level interview exercise with effects, filters, and state updates |
 | `13-contact-card-components.tsx` | Build a typed reusable component with props and callbacks |
 | `14-from-scratch-storefront.tsx` | A blank-slate component, state, and TypeScript practice challenge |
+| `15-prebuilt-product-cart-interview.tsx` | A UI-ready interview exercise focused on implementing behavior |
 
 For each exercise, begin by saying what state you need, what can be derived, and what the simplest usable version is.

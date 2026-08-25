@@ -15,6 +15,7 @@ import SignupForm from "../playgrounds/11-signup-form";
 import SupportTicketQueue from "../playgrounds/12-support-ticket-queue";
 import ContactCardComponents from "../playgrounds/13-contact-card-components";
 import FromScratchStorefront from "../playgrounds/14-from-scratch-storefront";
+import PrebuiltProductCartInterview from "../playgrounds/15-prebuilt-product-cart-interview";
 
 const exercises = [
   { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
@@ -31,6 +32,7 @@ const exercises = [
   { id: "tickets", number: "12", title: "Support ticket queue", skills: "useEffect · filters · immutable updates", file: "playgrounds/12-support-ticket-queue.tsx", status: "45-minute mock" },
   { id: "components", number: "13", title: "Contact card components", skills: "components · props · callbacks", file: "playgrounds/13-contact-card-components.tsx", status: "Build from scratch" },
   { id: "storefront", number: "14", title: "Storefront from scratch", skills: "types · components · state · arrays", file: "playgrounds/14-from-scratch-storefront.tsx", status: "Start with a blank slate" },
+  { id: "prebuilt-cart", number: "15", title: "Prebuilt product cart", skills: "functions · state updates · derived data", file: "playgrounds/15-prebuilt-product-cart-interview.tsx", status: "UI ready. Wire behavior." },
 ];
 
 export default function Home() {
@@ -49,7 +51,8 @@ export default function Home() {
     : selectedId === "form" ? SignupForm
     : selectedId === "tickets" ? SupportTicketQueue
     : selectedId === "components" ? ContactCardComponents
-    : FromScratchStorefront;
+    : selectedId === "storefront" ? FromScratchStorefront
+    : PrebuiltProductCartInterview;
 
   return (
     <main className="hub">
