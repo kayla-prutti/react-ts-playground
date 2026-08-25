@@ -1,6 +1,5 @@
 "use client";
 
-import { resolve } from "path";
 import { useState, useMemo, useEffect } from "react";
 
 interface Products {
@@ -12,10 +11,10 @@ interface Products {
 }
 
 const initCart: Products[] = [
-  { id: 1, name: "Dress", category: "clothes", price: 39, quantity: 0 },
-  { id: 2, name: "Pants", category: "clothes", price: 29, quantity: 0 },
-  { id: 3, name: "Donut", category: "food", price: 5, quantity: 0 },
-  { id: 4, name: "Coffee", category: "food", price: 7, quantity: 0 },
+  { id: 1, name: "Dress", category: "clothes", price: 39, quantity: 1 },
+  { id: 2, name: "Pants", category: "clothes", price: 29, quantity: 1 },
+  { id: 3, name: "Donut", category: "food", price: 5, quantity: 1 },
+  { id: 4, name: "Coffee", category: "food", price: 7, quantity: 1 },
 ];
 
 function fetchItems(): Promise<Products[]> {
@@ -24,7 +23,13 @@ function fetchItems(): Promise<Products[]> {
   );
 }
 
-function ProductCard({ item }: { item: Products }) {
+function ProductCard({
+  item,
+  onAdd,
+}: {
+  item: Products;
+  onAdd: (item: Products) => void;
+}) {
   return (
     <article key={item.id}>
       <div>
@@ -34,12 +39,20 @@ function ProductCard({ item }: { item: Products }) {
           <span>${item.price}</span>
         </div>
       </div>
-      <button type="button">Add Item</button>
+      <button type="button" onClick={() => onAdd(item)}>
+        Add Item
+      </button>
     </article>
   );
 }
 
-function ItemCard({ item }: { item: Products }) {
+function ItemCard({
+  item,
+  onUpdateQuantity,
+}: {
+  item: Products;
+  onUpdateQuantity: (id: number, delta: number) => void;
+}) {
   return (
     <article key={item.id}>
       <div>
@@ -50,8 +63,13 @@ function ItemCard({ item }: { item: Products }) {
         </div>
       </div>
       <div className="button-row">
-        <button type="button">-</button>
-        <button type="button">+</button>
+        <button type="button" onClick={() => onUpdateQuantity(item.id, -1)}>
+          -
+        </button>
+        <span>{item.quantity}</span>
+        <button type="button" onClick={() => onUpdateQuantity(item.id, 1)}>
+          +
+        </button>
       </div>
     </article>
   );
@@ -108,6 +126,37 @@ export default function FromScratchStorefront() {
     );
   }, [query, category, allProducts]);
 
+  const handleAddItem = (item: Products) => {
+    setCart((prevCart) => {
+      const existing = prevCart.find((cartItem) => cartItem.id === item.id);
+
+      if (existing) {
+        return prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      }
+
+      return [...prevCart, { ...item, quantity: item.quantity }];
+    });
+  };
+
+  const handleQuantity = (id: number, delta: number) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity + delta } : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  function totalSum() {
+    return cart.reduce((total, obj) => total + obj.price * obj.quantity, 0);
+  }
+
+  console.log("cart", cart);
   return (
     <main>
       <h1>Build a storefront from scratch</h1>
@@ -116,20 +165,6 @@ export default function FromScratchStorefront() {
         ProductCard, then map it across the product list.
       </p>
 
-      <section className="challenge-brief" aria-label="Challenge brief">
-        <strong>Start in this file</strong>
-        <p>
-          Replace this instruction screen with your own storefront. Do not look
-          at the other cart exercise until you have a working first version.
-        </p>
-      </section>
-
-      <ol>
-        <li>Write your Product and CartItem interfaces.</li>
-        <li>Create the product data and cart state.</li>
-        <li>Build ProductCard and CartSummary components.</li>
-        <li>Add cart updates and the derived subtotal.</li>
-      </ol>
       <label>Search name of item</label>
       <input
         aria-label="Seach item"
@@ -153,9 +188,32 @@ export default function FromScratchStorefront() {
         {isLoading && <p role="status">Loading tickets…</p>}
         {error && <p role="alert">{error}</p>}
         {!isLoading && !error && filterItems.length > 0 ? (
-          filterItems.map((item) => <ProductCard key={item.id} item={item} />)
+          filterItems.map((item) => (
+            <ProductCard
+              key={item.id}
+              item={item}
+              onAdd={() => handleAddItem(item)}
+            />
+          ))
         ) : (
           <p>No item found</p>
+        )}
+      </section>
+      <section>
+        <strong>My cart</strong>
+        {cart.length > 0 ? (
+          <div>
+            {cart.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                onUpdateQuantity={handleQuantity}
+              />
+            ))}
+            <p>Total: {totalSum()}</p>
+          </div>
+        ) : (
+          <p>Cart is empty</p>
         )}
       </section>
     </main>

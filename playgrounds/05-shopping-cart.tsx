@@ -21,7 +21,6 @@ export default function ShoppingCart() {
   // TODO: Remove an item when its quantity reaches 0.
   // TODO: Derive a subtotal from cart instead of storing it in state.
   function handleQuantity(action: string, id: number) {
-    console.log({ action, id });
     if (action === "increase") {
       setCart(
         cart.map((item) =>
