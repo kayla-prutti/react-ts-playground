@@ -16,6 +16,7 @@ import SupportTicketQueue from "../playgrounds/12-support-ticket-queue";
 import ContactCardComponents from "../playgrounds/13-contact-card-components";
 import FromScratchStorefront from "../playgrounds/14-from-scratch-storefront";
 import PrebuiltProductCartInterview from "../playgrounds/15-prebuilt-product-cart-interview";
+import PrebuiltRsvpForm from "../playgrounds/16-prebuilt-rsvp-form";
 
 const exercises = [
   { id: "products", number: "01", title: "Filterable product list", skills: "useState · derived data · lists", file: "playgrounds/01-filterable-product-list.tsx", status: "Complete" },
@@ -33,6 +34,7 @@ const exercises = [
   { id: "components", number: "13", title: "Contact card components", skills: "components · props · callbacks", file: "playgrounds/13-contact-card-components.tsx", status: "Build from scratch" },
   { id: "storefront", number: "14", title: "Storefront from scratch", skills: "types · components · state · arrays", file: "playgrounds/14-from-scratch-storefront.tsx", status: "Start with a blank slate" },
   { id: "prebuilt-cart", number: "15", title: "Prebuilt product cart", skills: "functions · state updates · derived data", file: "playgrounds/15-prebuilt-product-cart-interview.tsx", status: "UI ready. Wire behavior." },
+  { id: "rsvp-form", number: "16", title: "Prebuilt RSVP form", skills: "controlled inputs · validation · submit", file: "playgrounds/16-prebuilt-rsvp-form.tsx", status: "UI ready. Wire behavior." },
 ];
 
 export default function Home() {
@@ -52,7 +54,8 @@ export default function Home() {
     : selectedId === "tickets" ? SupportTicketQueue
     : selectedId === "components" ? ContactCardComponents
     : selectedId === "storefront" ? FromScratchStorefront
-    : PrebuiltProductCartInterview;
+    : selectedId === "prebuilt-cart" ? PrebuiltProductCartInterview
+    : PrebuiltRsvpForm;
 
   return (
     <main className="hub">

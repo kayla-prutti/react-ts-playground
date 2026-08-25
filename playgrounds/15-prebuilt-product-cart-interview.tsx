@@ -27,15 +27,36 @@ export default function PrebuiltProductCartInterview() {
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   // TODO 1: replace products with a case-insensitive search result.
-  const visibleProducts = products;
+  const visibleProducts = products.filter((product) =>
+    product.category.toLowerCase().includes(query.toLowerCase())
+  );
+
   function addToCart(product: Product) {
     /* TODO 2: add a CartItem or increase its quantity. */
+    setCart((prev) => {
+      const existing = prev.find((prev) => prev.id === product.id);
+      if (existing) {
+        return prev.map((p) =>
+          p.id === product.id ? { ...product, quantity: p.quantity + 1 } : p
+        );
+      }
+
+      return [...prev, { ...product, quantity: 1 }];
+    });
   }
   function updateQuantity(id: number, change: number) {
     /* TODO 3: update immutably and remove at zero. */
+    setCart((prev) =>
+      prev
+        .map((p) => (p.id === id ? { ...p, quantity: p.quantity + change } : p))
+        .filter((p) => p.quantity > 0)
+    );
   }
   // TODO 4: derive total from cart with reduce.
-  const total = 0;
+  const total = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
     <main className="interview-cart">
