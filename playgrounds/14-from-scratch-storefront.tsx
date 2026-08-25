@@ -2,24 +2,29 @@
 
 import { useState, useMemo, useEffect } from "react";
 
-interface Products {
+type Category = "clothes" | "food";
+
+interface Product {
   id: number;
   name: string;
   price: number;
-  category: string;
+  category: Category;
+}
+
+interface CartItem extends Product {
   quantity: number;
 }
 
-const initCart: Products[] = [
-  { id: 1, name: "Dress", category: "clothes", price: 39, quantity: 1 },
-  { id: 2, name: "Pants", category: "clothes", price: 29, quantity: 1 },
-  { id: 3, name: "Donut", category: "food", price: 5, quantity: 1 },
-  { id: 4, name: "Coffee", category: "food", price: 7, quantity: 1 },
+const products: Product[] = [
+  { id: 1, name: "Dress", category: "clothes", price: 39 },
+  { id: 2, name: "Pants", category: "clothes", price: 29 },
+  { id: 3, name: "Donut", category: "food", price: 5 },
+  { id: 4, name: "Coffee", category: "food", price: 7 },
 ];
 
-function fetchItems(): Promise<Products[]> {
+function fetchItems(): Promise<Product[]> {
   return new Promise((resolve) =>
-    window.setTimeout(() => resolve(initCart), 1000)
+    window.setTimeout(() => resolve(products), 1000)
   );
 }
 
@@ -27,11 +32,11 @@ function ProductCard({
   item,
   onAdd,
 }: {
-  item: Products;
-  onAdd: (item: Products) => void;
+  item: Product;
+  onAdd: (item: Product) => void;
 }) {
   return (
-    <article key={item.id}>
+    <article>
       <div>
         <strong>{item.name}</strong>
         <div style={{ display: "flex" }}>
@@ -50,11 +55,11 @@ function ItemCard({
   item,
   onUpdateQuantity,
 }: {
-  item: Products;
+  item: CartItem;
   onUpdateQuantity: (id: number, delta: number) => void;
 }) {
   return (
-    <article key={item.id}>
+    <article>
       <div>
         <strong>{item.name}</strong>
         <div style={{ display: "flex" }}>
@@ -72,6 +77,34 @@ function ItemCard({
         </button>
       </div>
     </article>
+  );
+}
+
+function CartSummary({
+  cart,
+  onUpdateQuantity,
+}: {
+  cart: CartItem[];
+  onUpdateQuantity: (id: number, delta: number) => void;
+}) {
+  const subtotal = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  if (cart.length === 0) return <p>Cart is empty</p>;
+
+  return (
+    <div>
+      {cart.map((item) => (
+        <ItemCard
+          key={item.id}
+          item={item}
+          onUpdateQuantity={onUpdateQuantity}
+        />
+      ))}
+      <p>Total: ${subtotal.toFixed(2)}</p>
+    </div>
   );
 }
 
@@ -96,23 +129,23 @@ function ItemCard({
 // - Use a single accent color for Add and quantity buttons.
 
 export default function FromScratchStorefront() {
-  const [allProducts, setAllProducts] = useState<Products[]>([]);
-  const [cart, setCart] = useState<Products[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<"all" | Products["category"]>("all");
-  const [isLoading, setIsloading] = useState(true);
+  const [category, setCategory] = useState<"all" | Category>("all");
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsloading(true);
-        const rest = await fetchItems();
-        setAllProducts(rest);
+        setIsLoading(true);
+        const result = await fetchItems();
+        setAllProducts(result);
       } catch {
-        setError("No data fetch");
+        setError("Could not load products.");
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -126,7 +159,7 @@ export default function FromScratchStorefront() {
     );
   }, [query, category, allProducts]);
 
-  const handleAddItem = (item: Products) => {
+  const handleAddItem = (item: Product) => {
     setCart((prevCart) => {
       const existing = prevCart.find((cartItem) => cartItem.id === item.id);
 
@@ -138,7 +171,7 @@ export default function FromScratchStorefront() {
         );
       }
 
-      return [...prevCart, { ...item, quantity: item.quantity }];
+      return [...prevCart, { ...item, quantity: 1 }];
     });
   };
 
@@ -152,11 +185,6 @@ export default function FromScratchStorefront() {
     );
   };
 
-  function totalSum() {
-    return cart.reduce((total, obj) => total + obj.price * obj.quantity, 0);
-  }
-
-  console.log("cart", cart);
   return (
     <main>
       <h1>Build a storefront from scratch</h1>
@@ -165,19 +193,18 @@ export default function FromScratchStorefront() {
         ProductCard, then map it across the product list.
       </p>
 
-      <label>Search name of item</label>
+      <label htmlFor="product-search">Search name of item</label>
       <input
-        aria-label="Seach item"
+        id="product-search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Searh"
+        placeholder="Search"
       />
-      <label>Select category</label>
+      <label htmlFor="category">Select category</label>
       <select
+        id="category"
         value={category}
-        onChange={(e) =>
-          setCategory(e.target.value as "all" | Products["category"])
-        }
+        onChange={(e) => setCategory(e.target.value as "all" | Category)}
       >
         <option value="all">All</option>
         <option value="clothes">Clothes</option>
@@ -185,36 +212,21 @@ export default function FromScratchStorefront() {
       </select>
       <section aria-label="Cart Items">
         <strong>All Products</strong>
-        {isLoading && <p role="status">Loading tickets…</p>}
+        {isLoading && <p role="status">Loading products…</p>}
         {error && <p role="alert">{error}</p>}
-        {!isLoading && !error && filterItems.length > 0 ? (
-          filterItems.map((item) => (
-            <ProductCard
-              key={item.id}
-              item={item}
-              onAdd={() => handleAddItem(item)}
-            />
-          ))
-        ) : (
-          <p>No item found</p>
-        )}
+        {!isLoading &&
+          !error &&
+          (filterItems.length > 0 ? (
+            filterItems.map((item) => (
+              <ProductCard key={item.id} item={item} onAdd={handleAddItem} />
+            ))
+          ) : (
+            <p>No item found</p>
+          ))}
       </section>
       <section>
         <strong>My cart</strong>
-        {cart.length > 0 ? (
-          <div>
-            {cart.map((item) => (
-              <ItemCard
-                key={item.id}
-                item={item}
-                onUpdateQuantity={handleQuantity}
-              />
-            ))}
-            <p>Total: {totalSum()}</p>
-          </div>
-        ) : (
-          <p>Cart is empty</p>
-        )}
+        <CartSummary cart={cart} onUpdateQuantity={handleQuantity} />
       </section>
     </main>
   );
